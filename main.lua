@@ -10,7 +10,7 @@ local function pointDist( pointA, pointB )
 	
 end
 
-local beginTouchPosX, beginTouchPosY
+local beginPosX, beginPosY
 
 local group = display.newGroup()
 
@@ -24,28 +24,28 @@ rect:setFillColor(0,255,0)
 rect = display.newRect( group, 100, 400, 200, 100 )
 rect:setFillColor(255,0,0)
 
+local controller
+controller = display.newRect( 600, 1000, 200, 200)
+controller:setFillColor(255,255,0)
+controller.rotation = 45
+
 function touch(self, e)
 	-- get the object which received the touch event
-	local target = e.target	
-	
-	-- get reference to self object
-	local rect = self
-	
+	local target = e.target
+	local phase = e.phase
+	local distX
+	local distY
 	-- handle began phase of the touch event life cycle...
-	if (e.phase == "began") then
-		beginTouchPosX = e.xStart
-		beginTouchPosY = e.yStart
-
+	if (phase == "began") then
+		beginPosX = group.x
+		beginPosY = group.y
 		-- we handled the began phase
 		return true
-
-	elseif (e.phase == "moved") then
-		local movX = e.x - beginTouchPosX
-		local movY = e.y - beginTouchPosY		
-		group.x = group.x + movX
-		group.y = group.y + movY
-		-- beginTouchPosX = target.x
-		-- beginTouchPosY = target.y			
+	elseif (phase == "moved") then		
+		distX = e.x - e.xStart
+		distY = e.y - e.yStart
+		group.x = beginPosX + distX
+		group.y = beginPosY + distY		
 	else -- "ended" and "cancelled" phases			
 
 	end
@@ -55,10 +55,10 @@ function touch(self, e)
 end
 
 -- attach pinch zoom touch listener
-group.touch = touch
+controller.touch = touch
 
 -- listen for touches starting on the touch object
-group:addEventListener("touch")
+controller:addEventListener("touch")
 
 local oriRefPointX, oriRefPointY
 

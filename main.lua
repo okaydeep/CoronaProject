@@ -38,10 +38,10 @@ function touch(self, e)
 	-- handle began phase of the touch event life cycle...
 	if (phase == "began") then
 		beginPosX = group.x
-		beginPosY = group.y
+		beginPosY = group.y		
 		-- we handled the began phase
 		return true
-	elseif (phase == "moved") then		
+	elseif (phase == "moved") then
 		distX = e.x - e.xStart
 		distY = e.y - e.yStart
 		group.x = beginPosX + distX
